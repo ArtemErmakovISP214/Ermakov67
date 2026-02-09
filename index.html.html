@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система управления | Администратор</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="logo">
+                <div class="logo-text">SYSTEMADMIN</div>
+            </div>
+            
+            <nav class="top-nav">
+                <a href="#" class="nav-item active" data-page="users">Пользователи</a>
+                <a href="#" class="nav-item" data-page="projects">Проекты</a>
+                <a href="#" class="nav-item" data-page="analytics">Аналитика</a>
+                <a href="#" class="nav-item" data-page="settings">Настройки</a>
+                <a href="#" class="nav-item" data-page="logs">Журнал</a>
+            </nav>
+            
+            <div class="user-info">
+                <div class="user-avatar">АД</div>
+                <div>
+                    <div style="font-weight: 500;">Администратор</div>
+                    <div style="font-size: 11px; color: #999;">admin@system.ru</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Заголовок страницы -->
+            <div class="page-header">
+                <h1 class="page-title" id="pageTitle">Управление пользователями</h1>
+                <div class="page-subtitle" id="pageSubtitle">Всего зарегистрировано: 1,247 пользователей</div>
+            </div>
+
+            <!-- Карточки статистики -->
+            <div class="stats-grid" id="statsCards">
+                <div class="stat-card">
+                    <div class="stat-value">84</div>
+                    <div class="stat-label">Активные сейчас</div>
+                    <div class="stat-change positive">+12 с прошлой недели</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">23</div>
+                    <div class="stat-label">Новые заявки</div>
+                    <div class="stat-change positive">+5 за сегодня</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Заблокированы</div>
+                    <div class="stat-change negative">-2 на прошлой неделе</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">98.7%</div>
+                    <div class="stat-label">Активность системы</div>
+                    <div class="stat-change positive">Стабильно</div>
+                </div>
+            </div>
+
+            <!-- Панель управления -->
+            <div class="control-panel" id="controlPanel">
+                <div class="control-panel-header">
+                    <div class="control-panel-title">Список пользователей</div>
+                    <div class="control-actions">
+                        <button class="btn btn-secondary" id="exportBtn">Экспорт</button>
+                        <button class="btn btn-primary" id="addUserBtn">Добавить пользователя</button>
+                    </div>
+                </div>
+
+                <!-- Поиск и фильтры -->
+                <div class="search-section">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск по имени, email или роли...">
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Все статусы</option>
+                        <option value="active">Активные</option>
+                        <option value="pending">Ожидающие</option>
+                        <option value="inactive">Неактивные</option>
+                    </select>
+                    <select class="filter-select" id="roleFilter">
+                        <option value="">Все роли</option>
+                        <option value="admin">Администраторы</option>
+                        <option value="manager">Менеджеры</option>
+                        <option value="developer">Разработчики</option>
+                    </select>
+                </div>
+
+                <!-- Таблица данных -->
+                <div class="data-table">
+                    <table id="usersTable">
+                        <thead>
+                            <tr class="table-header-row">
+                                <th class="table-header-cell">Пользователь</th>
+                                <th class="table-header-cell">Роль</th>
+                                <th class="table-header-cell">Дата регистрации</th>
+                                <th class="table-header-cell">Статус</th>
+                                <th class="table-header-cell">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Данные загружаются через JavaScript -->
+                        </tbody>
+                    </table>
+
+                    <!-- Пустое состояние -->
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-state-icon">📭</div>
+                        <div class="empty-state-title">Пользователи не найдены</div>
+                        <div class="empty-state-text">Попробуйте изменить параметры поиска</div>
+                        <button class="btn btn-primary" id="clearFiltersBtn">Сбросить фильтры</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления/редактирования -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Добавить пользователя</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Имя и фамилия</label>
+                    <input type="text" class="form-input" id="userName" placeholder="Введите полное имя">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="userEmail" placeholder="user@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Роль</label>
+                    <select class="form-input" id="userRole">
+                        <option value="">Выберите роль</option>
+                        <option value="admin">Администратор</option>
+                        <option value="manager">Менеджер проектов</option>
+                        <option value="developer">Разработчик</option>
+                        <option value="tester">Тестировщик</option>
+                        <option value="viewer">Наблюдатель</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Статус</label>
+                    <select class="form-input" id="userStatus">
+                        <option value="active">Активный</option>
+                        <option value="pending">Ожидает активации</option>
+                        <option value="inactive">Неактивный</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">Отмена</button>
+                <button class="btn btn-primary" id="saveBtn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Подтверждение удаления</div>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить этого пользователя? Это действие нельзя отменить.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDeleteBtn">Отмена</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
